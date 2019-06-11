@@ -7,8 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-interface BookRepository extends JpaRepository<Book, Long> {
-}
+
 
 @RestController
 @RequestMapping("/book")
