@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet author="jjaworski" id="1">
+        <createTable catalogName="book"
+                     schemaName="public"
+                     tableName="book">
+            <column name="id" type="bigserial" autoIncrement="true" startWith="1"/>
+            <column name="isbn" type="int"/>
+            <column name="title" type="varchar(40)"/>
+            <column name="author" type="varchar(40)"/>
+            <column name="price" type="float"/>
+            <column name="genre" type="varchar(40)"/>
+            <column name="pubh" type="varchar(40)"/>
+            <column name="description" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="jjaworski" id="2">
+        <insert tableName="book">
+            <column name="isbn" value="7576575"></column>
+            <column name="title" value="Czysty Kod"></column>
+            <column name="author" value="Robert C. Martin"></column>
+            <column name="price" value="50.99"></column>
+            <column name="genre" value="qwerty"></column>
+            <column name="pubh" value="qwerty"></column>
+            <column name="description" value="qwerty"></column>
+        </insert>
+    </changeSet>
+    <changeSet author="jjaworski" id="3">
+        <insert tableName="book">
+            <column name="isbn" value="123456678"></column>
+            <column name="title" value="Ogniem i mieczem"></column>
+            <column name="author" value="Henryk Sienkiewicz"></column>
+            <column name="price" value="35.99"></column>
+            <column name="genre" value="qwerty"></column>
+            <column name="pubh" value="qwerty"></column>
+            <column name="description" value="qwerty"></column>
+        </insert>
+    </changeSet>
+    <changeSet author="jjaworski" id="4">
+        <insert tableName="book">
+            <column name="isbn" value="987654321"></column>
+            <column name="title" value="Potop"></column>
+            <column name="author" value="Henryk Sienkiewicz"></column>
+            <column name="price" value="65.99"></column>
+            <column name="genre" value="Lorem ipsum"></column>
+            <column name="pubh" value="Lorem ipsum"></column>
+            <column name="description" value="Lorem ipsum"></column>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
