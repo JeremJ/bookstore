@@ -4,7 +4,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
     http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
-    <includeAll path="db/changelog/" />
+    <includeAll path="src/main/resources/db/changelog/changes/changelog-master.xml" />
     <changeSet author="jjaworski" id="1">
         <createTable tableName="book">
             <column name="id"
@@ -33,14 +33,6 @@
             <column name="description" type="varchar(100)">
                 <constraints nullable="false"/>
             </column>
-        </createTable>
-    </changeSet>
-    <changeSet author="User (generated)" id="1560446084351-1">
-        <createSequence sequenceName="hibernate_sequence"/>
-    </changeSet>
-    <changeSet author="User (generated)" id="1560446084351-2">
-        <createTable remarks="A String" tableName="person">
-            <column name="address" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>

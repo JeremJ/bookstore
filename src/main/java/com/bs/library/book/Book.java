@@ -1,14 +1,13 @@
-package com.bs.library.Book;
+package com.bs.library.book;
 
 import lombok.*;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Data
-@Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Entity
 @Table(name = "book")
 public class Book {
@@ -19,7 +18,7 @@ public class Book {
     private Integer ISBN;
     private String title;
     private String author;
-    private Float price;
+    private BigDecimal price;
     private String genre;
     private String pubh;
     private String description;
