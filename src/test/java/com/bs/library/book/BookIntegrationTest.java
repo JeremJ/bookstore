@@ -82,14 +82,14 @@ public class BookIntegrationTest {
                 .andExpect(jsonPath("$[0].title", is("Czysty Kod")))
                 .andExpect(jsonPath("$[0].author", is("Robert C. Martin")))
                 .andExpect(jsonPath("$[0].genre", is("qwerty")))
-                .andExpect(jsonPath("$[0].pubh", is("qwerty")))
+                .andExpect(jsonPath("$[0].publisher", is("qwerty")))
                 .andExpect(jsonPath("$[0].description", is("qwerty")))
                 .andExpect(jsonPath("$[1].id", is(2)))
                 .andExpect(jsonPath("$[1].isbn", is(9432123)))
                 .andExpect(jsonPath("$[1].title", is("Ogniem i mieczem")))
                 .andExpect(jsonPath("$[1].author", is("Henryk Sienkiewicz")))
                 .andExpect(jsonPath("$[1].genre", is("qwerty")))
-                .andExpect(jsonPath("$[1].pubh", is("qwerty")))
+                .andExpect(jsonPath("$[1].publisher", is("qwerty")))
                 .andExpect(jsonPath("$[1].description", is("qwerty")))
                 .andExpect(status().isOk());
         verify(bookService, times(1)).allBooks();

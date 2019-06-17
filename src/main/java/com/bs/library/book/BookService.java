@@ -5,6 +5,7 @@ import lombok.Data;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Data
 @Service
@@ -13,11 +14,8 @@ public class BookService {
     private final BookRepository bookRepository;
 
 
-    public List<Book> allBooks() throws BookNotFoundException {
-        if (bookRepository.findAll().isEmpty()) {
-            throw new BookNotFoundException();
-        } else
-            return bookRepository.findAll();
+    public List<Book> allBooks() {
+        return bookRepository.findAll();
     }
 
 
@@ -40,17 +38,21 @@ public class BookService {
     }
 
     public void updateBook(Long id, Book book) {
-        if (bookRepository.existsById(id)) {
-            Book currentBook = bookRepository.getOne(id);
-            currentBook.setISBN(book.getISBN());
-            currentBook.setTitle(book.getTitle());
-            currentBook.setAuthor(book.getAuthor());
-            currentBook.setPrice(book.getPrice());
-            currentBook.setGenre(book.getGenre());
-            currentBook.setPubh(book.getPubh());
-            currentBook.setDescription(book.getDescription());
-            bookRepository.save(currentBook);
-        } else throw new BookNotFoundException();
+        Book currentBook;
+        currentBook = bookRepository.findById(id).map(
+                book1 -> {
+                    book1.setIsbn(book.getIsbn());
+                    book1.setTitle(book.getTitle());
+                    book1.setAuthor(book.getAuthor());
+                    book1.setPrice(book.getPrice());
+                    book1.setGenre(book.getGenre());
+                    book1.setPublisher(book.getPublisher());
+                    book1.setDescription(book.getDescription());
+                    return book1;
+                }
+        ).orElseThrow(BookNotFoundException::new);
+
+        bookRepository.save(currentBook);
     }
 
 }

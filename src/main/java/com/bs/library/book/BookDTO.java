@@ -11,11 +11,11 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class BookDTO {
     private Long id;
-    private Integer ISBN;
+    private Integer isbn;
     private String title;
     private String author;
     private BigDecimal price;
     private String genre;
-    private String pubh;
+    private String publisher;
     private String description;
 }
