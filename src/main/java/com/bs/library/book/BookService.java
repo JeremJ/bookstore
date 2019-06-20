@@ -1,9 +1,14 @@
 package com.bs.library.book;
 
 import com.bs.library.exception.BookNotFoundException;
+import com.querydsl.core.types.Predicate;
 import lombok.Data;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -13,10 +18,17 @@ public class BookService {
     private final BookRepository bookRepository;
 
 
-    public List<Book> allBooks() {
-        return bookRepository.findAll();
+    public Page<Book> allBooksPageable(Pageable pageable) {
+        Page<Book> page = bookRepository.findAll(pageable);
+        return page;
     }
 
+    public List<Book> findByParameter(Predicate predicate, Sort sort) {
+        Iterable<Book> iterable = bookRepository.findAll(predicate, sort);
+        List<Book> list = new ArrayList<>();
+        iterable.forEach(list::add);
+        return list;
+    }
 
     public void addBook(Book book) {
         bookRepository.saveAndFlush(book);
