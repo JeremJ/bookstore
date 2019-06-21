@@ -1,5 +1,7 @@
 package com.bs.library.book;
 
+import com.bs.library.book.Book;
+import com.bs.library.book.BookDTO;
 import org.mapstruct.Mapper;
 
 import java.util.List;

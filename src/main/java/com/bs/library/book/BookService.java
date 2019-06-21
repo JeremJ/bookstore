@@ -1,14 +1,14 @@
 package com.bs.library.book;
 
+import com.bs.library.book.utils.SearchQueryParams;
 import com.bs.library.exception.BookNotFoundException;
-import com.querydsl.core.types.Predicate;
 import lombok.Data;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -23,11 +23,16 @@ public class BookService {
         return page;
     }
 
-    public List<Book> findByParameter(Predicate predicate, Sort sort) {
-        Iterable<Book> iterable = bookRepository.findAll(predicate, sort);
-        List<Book> list = new ArrayList<>();
-        iterable.forEach(list::add);
-        return list;
+    public List<Book> findByParameter(SearchQueryParams search, Sort sort) {
+        Specification<Book> specification = Specification.where(BookSpecification.withIsbn(search.getIsbn())
+                .or(BookSpecification.withTitle(search.getTitle()))
+                .or(BookSpecification.withAuthor(search.getAuthor()))
+                .or(BookSpecification.withPrice(search.getPrice()))
+                .or(BookSpecification.withGenre(search.getGenre()))
+                .or(BookSpecification.withPublisher(search.getPublisher()))
+                .or(BookSpecification.withDescription(search.getDescription()))
+        );
+        return bookRepository.findAll(specification, sort);
     }
 
     public void addBook(Book book) {

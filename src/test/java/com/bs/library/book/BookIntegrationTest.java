@@ -5,40 +5,32 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.querydsl.core.types.Predicate;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.*;
-import org.springframework.data.querydsl.binding.QuerydslPredicate;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
-
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.hamcrest.Matchers.is;
-
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
-
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -169,43 +161,6 @@ public class BookIntegrationTest {
                 .andExpect(content().string("Record does not exist"));
         verify(bookService, times(1)).updateBook(1L, book);
     }
-
-    @Test
-    public void findByParameter_ValiData_ProperJsonReturned() throws Exception {
-        //given
-        List<Book> books = Arrays.asList(
-                new Book(1L, 7576575, "Czysty Kod", "Robert C. Martin", new BigDecimal(50.99), "qwerty", "qwerty", "qwerty"),
-                new Book(2L, 9432123, "Ogniem i mieczem", "Henryk Sienkiewicz", new BigDecimal(99.99), "qwerty", "qwerty", "qwerty"),
-                new Book(3L, 9432123, "Ogniem i mieczem", "Henryk Sienkiewicz", new BigDecimal(99.99), "qwerty", "qwerty", "qwerty")
-        );
-        Sort sort = Sort.by("id").descending();
-        Comparator<Book> compareById = Comparator.comparing(Book::getId).reversed();
-        List<Book> result = books.stream()
-                .filter(item -> item.getTitle().equals("Ogniem i mieczem"))
-                .sorted(compareById)
-                .collect(Collectors.toList());
-        when(bookService.findByParameter(QBook.book.title.eq("Ogniem i mieczem"), sort)).thenReturn(result);
-        //then
-        mockMvc.perform(get("/books?title=Ogniem i mieczem&sort=id,desc"))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id", is(3)))
-                .andExpect(jsonPath("$[0].isbn", is(9432123)))
-                .andExpect(jsonPath("$[0].title", is("Ogniem i mieczem")))
-                .andExpect(jsonPath("$[0].author", is("Henryk Sienkiewicz")))
-                .andExpect(jsonPath("$[0].genre", is("qwerty")))
-                .andExpect(jsonPath("$[0].publisher", is("qwerty")))
-                .andExpect(jsonPath("$[0].description", is("qwerty")))
-                .andExpect(jsonPath("$[1].id", is(2)))
-                .andExpect(jsonPath("$[1].isbn", is(9432123)))
-                .andExpect(jsonPath("$[1].title", is("Ogniem i mieczem")))
-                .andExpect(jsonPath("$[1].author", is("Henryk Sienkiewicz")))
-                .andExpect(jsonPath("$[1].genre", is("qwerty")))
-                .andExpect(jsonPath("$[1].publisher", is("qwerty")))
-                .andExpect(jsonPath("$[1].description", is("qwerty")));
-        verify(bookService, times(1)).findByParameter(QBook.book.title.eq("Ogniem i mieczem"), sort);
-    }
-
 
     public static String asJson(final Object obj) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();

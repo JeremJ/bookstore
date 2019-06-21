@@ -1,14 +1,13 @@
 package com.bs.library.book;
 
+import com.bs.library.book.utils.SearchQueryParams;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.querydsl.core.types.Predicate;
 
 import java.util.List;
 
@@ -52,8 +51,9 @@ public class BookController {
     }
 
     @GetMapping
-    public ResponseEntity<List<BookDTO>> findAllByField(@QuerydslPredicate(root = Book.class) Predicate predicate, Sort sort) {
-        List<Book> books = bookService.findByParameter(predicate, sort);
+    public ResponseEntity<List<BookDTO>> findAllByField(SearchQueryParams search, Sort sort) {
+
+        List<Book> books = bookService.findByParameter(search, sort);
         return ResponseEntity.ok(bookMapper.toBookDTOs(books));
     }
 
