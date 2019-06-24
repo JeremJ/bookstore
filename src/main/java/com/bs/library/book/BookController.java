@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -26,7 +27,7 @@ public class BookController {
     }
 
     @PostMapping
-    public ResponseEntity addBook(@RequestBody BookDTO bookDTO) {
+    public ResponseEntity addBook(@Valid @RequestBody BookDTO bookDTO) {
         bookService.addBook(bookMapper.toBook(bookDTO));
         return ResponseEntity.status(HttpStatus.CREATED).body("Record inserted Successfully !");
     }
@@ -44,7 +45,7 @@ public class BookController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity updateBook(@PathVariable Long id, @RequestBody BookDTO bookDTO) {
+    public ResponseEntity updateBook(@PathVariable Long id, @Valid @RequestBody BookDTO bookDTO) {
         bookService.updateBook(id, bookMapper.toBook(bookDTO));
         return ResponseEntity.status(HttpStatus.CREATED).body("Record updated Successfully !");
 
@@ -52,7 +53,6 @@ public class BookController {
 
     @GetMapping
     public ResponseEntity<List<BookDTO>> findAllByField(SearchQueryParams search, Sort sort) {
-
         List<Book> books = bookService.findByParameter(search, sort);
         return ResponseEntity.ok(bookMapper.toBookDTOs(books));
     }
