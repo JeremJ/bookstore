@@ -8,29 +8,29 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
-
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-
-import static org.hamcrest.Matchers.is;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -38,8 +38,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 public class BookIntegrationTest {
-
-
 
 
     @Autowired
@@ -55,11 +53,10 @@ public class BookIntegrationTest {
     BookController bookController;
 
 
+
     @Before
     public void before() {
-
         bookController = new BookController(bookService, bookMapper);
-
         MockitoAnnotations.initMocks(this);
     }
 
@@ -72,9 +69,11 @@ public class BookIntegrationTest {
                 new Book(1L, 7576575, "Czysty Kod", "Robert C. Martin", new BigDecimal(50.99), "qwerty", "qwerty", "qwerty"),
                 new Book(2L, 9432123, "Ogniem i mieczem", "Henryk Sienkiewicz", new BigDecimal(99.99), "qwerty", "qwerty", "qwerty")
         );
-        when(bookService.allBooks()).thenReturn(books);
+        Page<Book> page = new PageImpl<>(books);
+        Pageable firstPageWithTwoElements = PageRequest.of(0, 2);
+        when(bookService.allBooksPageable(firstPageWithTwoElements)).thenReturn(page);
         //then
-        mockMvc.perform(get("/books"))
+        mockMvc.perform(get("/books/all?page=0&size=2"))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id", is(1)))
@@ -91,21 +90,11 @@ public class BookIntegrationTest {
                 .andExpect(jsonPath("$[1].genre", is("qwerty")))
                 .andExpect(jsonPath("$[1].publisher", is("qwerty")))
                 .andExpect(jsonPath("$[1].description", is("qwerty")))
-                .andExpect(status().isOk());
-        verify(bookService, times(1)).allBooks();
+                .andExpect(jsonPath("$", hasSize(2)));
+        verify(bookService, times(1)).allBooksPageable(firstPageWithTwoElements);
 
     }
 
-    @Test
-    public void getAll_MissingRecords_StatusNotFound() throws Exception {
-        //given
-        when(bookService.allBooks()).thenThrow(new BookNotFoundException());
-        //then
-        mockMvc.perform(get("/books"))
-                .andExpect(status().isNotFound())
-                .andExpect(content().string("Record does not exist"));
-        verify(bookService, times(1)).allBooks();
-    }
 
     @Test
     public void addBook_ValidData_StatusCreated() throws Exception {
@@ -150,12 +139,12 @@ public class BookIntegrationTest {
     @Test
     public void deleteBook_InvalidId_ExceptionThrown() throws Exception {
         //given
-        doThrow(new BookNotFoundException()).when(bookService).deleteBook(1L);
+        doThrow(new BookNotFoundException()).when(bookService).deleteBook(5L);
         //then
-        mockMvc.perform(delete("/books/{id}", 1))
+        mockMvc.perform(delete("/books/{id}", 5))
                 .andExpect(status().isNotFound())
                 .andExpect(content().string("Record does not exist"));
-        verify(bookService, times(1)).deleteBook(1L);
+        verify(bookService, times(1)).deleteBook(5L);
     }
 
     @Test

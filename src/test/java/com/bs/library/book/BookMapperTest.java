@@ -23,7 +23,7 @@ public class BookMapperTest {
     }
 
     @Test
-    public void toBookDto_returnsMappedObject_True() throws JsonProcessingException {
+    public void toBookDto_returnsMappedObject_True() {
         //given
         Book book = new Book(1L, 7576575, "Czysty Kod", "Robert C. Martin", new BigDecimal(50.99), "qwerty", "qwerty", "qwerty");
         //when

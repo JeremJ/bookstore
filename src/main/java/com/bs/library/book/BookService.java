@@ -1,11 +1,15 @@
 package com.bs.library.book;
 
+import com.bs.library.book.utils.SearchQueryParams;
 import com.bs.library.exception.BookNotFoundException;
 import lombok.Data;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Data
 @Service
@@ -14,10 +18,22 @@ public class BookService {
     private final BookRepository bookRepository;
 
 
-    public List<Book> allBooks() {
-        return bookRepository.findAll();
+    public Page<Book> allBooksPageable(Pageable pageable) {
+        Page<Book> page = bookRepository.findAll(pageable);
+        return page;
     }
 
+    public List<Book> findByParameter(SearchQueryParams search, Sort sort) {
+        Specification<Book> specification = Specification.where(BookSpecification.withIsbn(search.getIsbn())
+                .or(BookSpecification.withTitle(search.getTitle()))
+                .or(BookSpecification.withAuthor(search.getAuthor()))
+                .or(BookSpecification.withPrice(search.getPrice()))
+                .or(BookSpecification.withGenre(search.getGenre()))
+                .or(BookSpecification.withPublisher(search.getPublisher()))
+                .or(BookSpecification.withDescription(search.getDescription()))
+        );
+        return bookRepository.findAll(specification, sort);
+    }
 
     public void addBook(Book book) {
         bookRepository.saveAndFlush(book);

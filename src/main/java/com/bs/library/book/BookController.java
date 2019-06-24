@@ -1,6 +1,10 @@
 package com.bs.library.book;
 
+import com.bs.library.book.utils.SearchQueryParams;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +19,10 @@ public class BookController {
     private final BookService bookService;
     private final BookMapper bookMapper;
 
-    @GetMapping
-    public ResponseEntity<List<BookDTO>> allBooks() {
-        return ResponseEntity.ok(bookMapper.toBookDTOs(bookService.allBooks()));
+    @GetMapping("/all")
+    public ResponseEntity<List<BookDTO>> allBooks(Pageable pageable) {
+        Page<Book> page = bookService.allBooksPageable(pageable);
+        return ResponseEntity.ok(bookMapper.toBookDTOs(page.getContent()));
     }
 
     @PostMapping
@@ -44,4 +49,12 @@ public class BookController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Record updated Successfully !");
 
     }
+
+    @GetMapping
+    public ResponseEntity<List<BookDTO>> findAllByField(SearchQueryParams search, Sort sort) {
+
+        List<Book> books = bookService.findByParameter(search, sort);
+        return ResponseEntity.ok(bookMapper.toBookDTOs(books));
+    }
+
 }
