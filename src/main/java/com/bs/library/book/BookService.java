@@ -3,6 +3,8 @@ package com.bs.library.book;
 import com.bs.library.book.utils.SearchQueryParams;
 import com.bs.library.exception.BookNotFoundException;
 import lombok.Data;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -11,13 +13,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.bs.library.config.CacheConfig.BOOK_CACHEVALUE;
+
 @Data
 @Service
 public class BookService {
 
     private final BookRepository bookRepository;
 
-
+    @Cacheable(value = BOOK_CACHEVALUE)
     public Page<Book> allBooksPageable(Pageable pageable) {
         Page<Book> page = bookRepository.findAll(pageable);
         return page;
@@ -35,6 +39,7 @@ public class BookService {
         return bookRepository.findAll(specification, sort);
     }
 
+    @CacheEvict(value = BOOK_CACHEVALUE, allEntries = true)
     public void addBook(Book book) {
         bookRepository.saveAndFlush(book);
     }
@@ -44,6 +49,7 @@ public class BookService {
                 .orElseThrow(() -> new BookNotFoundException());
     }
 
+    @CacheEvict(value = BOOK_CACHEVALUE, allEntries = true)
     public void deleteBook(Long id) {
         if (bookRepository.existsById(id)) {
             bookRepository.deleteById(id);
@@ -53,6 +59,7 @@ public class BookService {
 
     }
 
+    @CacheEvict(value = BOOK_CACHEVALUE, allEntries = true)
     public void updateBook(Long id, Book book) {
         Book currentBook;
         currentBook = bookRepository.findById(id).map(
