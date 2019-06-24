@@ -11,4 +11,7 @@ spring:
             non_contextual_creation: true
   liquibase:
     change-log: classpath:db/changelog/changelog-master.xml
-
+  cache:
+    type: redis
+  redis:
+    host: 192.168.99.100
