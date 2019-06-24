@@ -20,7 +20,7 @@ public interface BookRepository extends JpaRepository<Book, Long>, JpaSpecificat
 
     @Override
     @CacheEvict(value = "allBooks", allEntries = true)
-    void deleteById(Long aLong);
+    void deleteById(Long id);
 
     @Override
     @CacheEvict(value = "allBooks", allEntries = true)
