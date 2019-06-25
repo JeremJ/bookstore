@@ -9,6 +9,12 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
+  application:
+    name: library
+  security:
+    token:
+      secret: qwerty
+      maxAgeSeconds: 860000
   liquibase:
     change-log: classpath:db/changelog/changelog-master.xml
   cache:

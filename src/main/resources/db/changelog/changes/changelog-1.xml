@@ -4,7 +4,6 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
     http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
-    <includeAll path="src/main/resources/db/changelog/changes/changelog-master.xml" />
     <changeSet author="jjaworski" id="1">
         <createTable tableName="book">
             <column name="id"
@@ -12,7 +11,7 @@
                     autoIncrement="true" startWith="1">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="book_pk"/>
             </column>
-            <column name="isbn" type="varchar(20)">
+            <column name="isbn" type="int">
                 <constraints nullable="false"/>
             </column>
             <column name="title" type="varchar(100)">
@@ -21,10 +20,10 @@
             <column name="author" type="varchar(40)">
                 <constraints nullable="false"/>
             </column>
-            <column name="price" type="float">
+            <column name="price" type="numeric">
                 <constraints nullable="false"/>
             </column>
-            <column name="genre" type="varchar(40">
+            <column name="genre" type="varchar(40)">
                 <constraints nullable="false"/>
             </column>
             <column name="publisher" type="varchar(40)">
