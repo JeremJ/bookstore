@@ -4,6 +4,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -24,6 +25,18 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = {NumberFormatException.class})
     protected ResponseEntity<Object> handleNumberFormatException(Exception ex, WebRequest request) {
         String message = "Please type correct data format";
+        return handleExceptionInternal(ex, message, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler(value = {UsernameNotFoundException.class})
+    protected ResponseEntity<Object> handleUserNotFoundException(Exception ex, WebRequest request) {
+        String message = "User not found";
+        return handleExceptionInternal(ex, message, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler(value = {UserAlreadyExists.class})
+    protected ResponseEntity<Object> handleUserAlreadyExist(Exception ex, WebRequest request) {
+        String message = "User is already exists!";
         return handleExceptionInternal(ex, message, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 

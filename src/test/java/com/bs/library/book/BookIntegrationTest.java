@@ -18,6 +18,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -37,6 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@WithMockUser(username = "test", authorities = {"ADMIN"})
 public class BookIntegrationTest {
 
 
@@ -62,6 +64,7 @@ public class BookIntegrationTest {
 
 
     @Test
+
     public void allBooks_ValidData_StatusOk() throws Exception {
 
         //given
@@ -160,6 +163,21 @@ public class BookIntegrationTest {
                 .andExpect(status().isNotFound())
                 .andExpect(content().string("Record does not exist"));
         verify(bookService, times(1)).updateBook(1L, book);
+    }
+
+    @Test
+    @WithMockUser(username = "test", authorities = {"CUSTOMER"})
+    public void updateBook_AccessDenied_Code403() throws Exception {
+        //given
+        Book book = new Book(1L, 7576575, "Czysty Kod", "Robert C. Martin", new BigDecimal(50.99), "qwerty", "qwerty", "qwerty");
+        String requestJson = asJson(book);
+        doThrow(new BookNotFoundException()).when(bookService).updateBook(1L, book);
+        //then
+        mockMvc.perform(put("/books/{id}", 1)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(requestJson))
+                .andExpect(status().isForbidden());
+        verify(bookService, times(0)).updateBook(1L, book);
     }
 
     public static String asJson(final Object obj) throws JsonProcessingException {
