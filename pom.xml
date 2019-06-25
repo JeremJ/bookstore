@@ -35,6 +35,8 @@
 		<spring-security-config.version>5.1.5.RELEASE</spring-security-config.version>
 		<spring-security-web.version>5.1.5.RELEASE</spring-security-web.version>
 		<jjwt.version>0.9.1</jjwt.version>
+		<spring-security-test.version>5.1.5.RELEASE</spring-security-test.version>
+		<spring-aop.version>5.1.5.RELEASE</spring-aop.version>
 	</properties>
 
 	<dependencies>
@@ -150,7 +152,13 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
-			<version>5.1.8.RELEASE</version>
+			<version>${spring-aop.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<version>${spring-security-test.version}</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
