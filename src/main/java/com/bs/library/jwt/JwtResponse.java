@@ -1,13 +1,11 @@
 package com.bs.library.jwt;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Data
+@RequiredArgsConstructor
 public class JwtResponse {
-    private String token;
-    private String type = "Bearer";
-
-    public JwtResponse(String accessToken) {
-        this.token = accessToken;
-    }
+    private final String token;
+    private final String type = "Bearer";
 }

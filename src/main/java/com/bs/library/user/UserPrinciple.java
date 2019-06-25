@@ -1,6 +1,7 @@
 package com.bs.library.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -9,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.*;
 
 @Data
+@AllArgsConstructor
 public class UserPrinciple implements UserDetails {
     private static final long serialVersionUID = 1L;
 
@@ -23,17 +25,9 @@ public class UserPrinciple implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserPrinciple(Long id, String username, String email, String password,
-                         Collection<? extends GrantedAuthority> authorities) {
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.authorities = authorities;
-    }
 
     public static UserPrinciple build(User user) {
-        Set<GrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority(user.getRole().getDisplayName().toUpperCase())) ;
+        Set<GrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority(user.getRole().name().toUpperCase()));
 
         return new UserPrinciple(
                 user.getId(),
@@ -77,14 +71,5 @@ public class UserPrinciple implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        UserPrinciple user = (UserPrinciple) o;
-        return Objects.equals(id, user.id);
     }
 }

@@ -3,8 +3,6 @@ package com.bs.library.user;
 import com.bs.library.exception.UserAlreadyExists;
 import com.bs.library.jwt.JwtProvider;
 import com.bs.library.jwt.JwtResponse;
-import com.bs.library.security.LoginForm;
-import com.bs.library.security.SignUpForm;
 import lombok.Data;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -51,22 +49,22 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public void registerUser(SignUpForm signUpForm) {
-        if (userRepository.existsByUsername(signUpForm.getUsername()) || userRepository.existsByUsername(signUpForm.getEmail())) {
+    public void registerUser(User user) {
+        if (userRepository.existsByUsername(user.getUsername()) || userRepository.existsByUsername(user.getEmail())) {
             throw new UserAlreadyExists();
         } else {
-            User user = new User(signUpForm.getUsername(),
-                    encoder.encode(signUpForm.getPassword()), signUpForm.getEmail(), signUpForm.getRole());
-            userRepository.save(user);
+            User current = new User(user.getUsername(),
+                    encoder.encode(user.getPass()), user.getEmail(), user.getRole());
+            userRepository.save(current);
         }
     }
 
-    public JwtResponse authenticateUser(LoginForm loginForm) {
+    public JwtResponse authenticateUser(String username, String password) {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        loginForm.getUsername(),
-                        loginForm.getPassword()
+                        username,
+                        password
                 )
         );
 

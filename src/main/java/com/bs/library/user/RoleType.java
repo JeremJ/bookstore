@@ -1,18 +1,10 @@
 package com.bs.library.user;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 
-@JsonFormat(shape = JsonFormat.Shape.STRING)
 public enum RoleType {
-    ADMIN("admin"),CUSTOMER("customer");
+    ADMIN, CUSTOMER;
 
-    private String displayName;
-
-    RoleType(String displayName){
-        this.displayName = displayName;
-    }
-
-    public String getDisplayName(){
-        return displayName;
+    public String RoleType() {
+        return name();
     }
 }

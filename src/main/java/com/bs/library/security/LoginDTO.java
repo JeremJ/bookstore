@@ -6,7 +6,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Data
-public class LoginForm {
+public class LoginDTO {
     @NotBlank
     @Size(min=3, max = 60)
     private String username;
