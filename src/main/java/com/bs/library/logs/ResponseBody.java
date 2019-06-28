@@ -1,6 +1,6 @@
 package com.bs.library.logs;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 @ControllerAdvice
+@RequiredArgsConstructor
 public class ResponseBody implements ResponseBodyAdvice<Object> {
 
-    @Autowired
-    LogService loggingService;
+    private final LogService logService;
 
     @Override
     public boolean supports(MethodParameter methodParameter, Class<? extends HttpMessageConverter<?>> aClass) {
@@ -26,7 +26,7 @@ public class ResponseBody implements ResponseBodyAdvice<Object> {
     public Object beforeBodyWrite(Object o, MethodParameter methodParameter, MediaType mediaType,
                                   Class<? extends HttpMessageConverter<?>> aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
         if (serverHttpRequest instanceof ServletServerHttpRequest && serverHttpResponse instanceof ServletServerHttpResponse) {
-            loggingService.logResponse(((ServletServerHttpRequest) serverHttpRequest).getServletRequest(),
+            logService.logResponse(((ServletServerHttpRequest) serverHttpRequest).getServletRequest(),
                     ((ServletServerHttpResponse) serverHttpResponse).getServletResponse(), o);
         }
 

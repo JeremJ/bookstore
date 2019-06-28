@@ -17,12 +17,12 @@ public class LogService {
 
     public void logRequest(HttpServletRequest httpServletRequest, Object body) {
         StringBuilder stringBuilder = new StringBuilder();
-        Map<String, String> parameters = buildParametersMap(httpServletRequest);
+        Map<String, String> parameters = parametersMap(httpServletRequest);
 
         stringBuilder.append("REQUEST ");
         stringBuilder.append("method=[").append(httpServletRequest.getMethod()).append("] ");
         stringBuilder.append("path=[").append(httpServletRequest.getRequestURI()).append("] ");
-        stringBuilder.append("headers=[").append(buildHeadersMap(httpServletRequest)).append("] ");
+        stringBuilder.append("headers=[").append(headersMapRequest(httpServletRequest)).append("] ");
 
         if (!parameters.isEmpty()) {
             stringBuilder.append("parameters=[").append(parameters).append("] ");
@@ -41,13 +41,13 @@ public class LogService {
         stringBuilder.append("RESPONSE ");
         stringBuilder.append("method=[").append(httpServletRequest.getMethod()).append("] ");
         stringBuilder.append("path=[").append(httpServletRequest.getRequestURI()).append("] ");
-        stringBuilder.append("responseHeaders=[").append(buildHeadersMap(httpServletResponse)).append("] ");
+        stringBuilder.append("responseHeaders=[").append(headersMapResponse(httpServletResponse)).append("] ");
         stringBuilder.append("responseBody=[").append(body).append("] ");
 
         log.info(stringBuilder.toString());
     }
 
-    private Map<String, String> buildParametersMap(HttpServletRequest httpServletRequest) {
+    private Map<String, String> parametersMap(HttpServletRequest httpServletRequest) {
         Map<String, String> resultMap = new HashMap<>();
         Enumeration<String> parameterNames = httpServletRequest.getParameterNames();
 
@@ -60,7 +60,7 @@ public class LogService {
         return resultMap;
     }
 
-    private Map<String, String> buildHeadersMap(HttpServletRequest request) {
+    private Map<String, String> headersMapRequest(HttpServletRequest request) {
         Map<String, String> map = new HashMap<>();
 
         Enumeration headerNames = request.getHeaderNames();
@@ -73,7 +73,7 @@ public class LogService {
         return map;
     }
 
-    private Map<String, String> buildHeadersMap(HttpServletResponse response) {
+    private Map<String, String> headersMapResponse(HttpServletResponse response) {
         Map<String, String> map = new HashMap<>();
 
         Collection<String> headerNames = response.getHeaderNames();
