@@ -11,10 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Component
@@ -38,12 +35,12 @@ public class LoggingFilter implements Filter {
             HttpServletResponse responseToCache = new ContentCachingResponseWrapper(response);
             chain.doFilter(requestToCache, responseToCache);
 
-            String request1 = String.format("REQUEST: | method: %s | path: %s | headers: %s | body: %s",
+            String requestLog = String.format("REQUEST: | method: %s | path: %s | headers: %s | body: %s",
                     requestToCache.getMethod(), request.getRequestURI(), headersMapRequest(request), getRequestData(requestToCache));
-            log.info(request1);
-            String response1 = String.format("RESPONSE: | method: %s | path: %s | headers: %s | body: %s",
+            log.info(requestLog);
+            String responseLog = String.format("RESPONSE: | method: %s | path: %s | headers: %s | body: %s",
                     requestToCache.getMethod(), request.getRequestURI(), headersMapResponse(response).toString(), getResponseData(responseToCache));
-            log.info(response1);
+            log.info(responseLog);
 
         } else {
             chain.doFilter(servletRequest, servletResponse);
@@ -51,30 +48,35 @@ public class LoggingFilter implements Filter {
 
     }
 
-    private static String getRequestData(final HttpServletRequest request) throws UnsupportedEncodingException {
-        String payload = null;
+    private static Optional getRequestData(final HttpServletRequest request) {
         ContentCachingRequestWrapper wrapper = WebUtils.getNativeRequest(request, ContentCachingRequestWrapper.class);
-        if (wrapper != null) {
-            byte[] buf = wrapper.getContentAsByteArray();
-            if (buf.length > 0) {
-                payload = new String(buf, 0, buf.length, wrapper.getCharacterEncoding());
-            }
-        }
-        return payload;
+        return Optional.ofNullable(wrapper)
+                .map(ContentCachingRequestWrapper::getContentAsByteArray)
+                .map(buf -> {
+                    try {
+                        return new String(buf, 0, buf.length, wrapper.getCharacterEncoding());
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                        return Optional.empty();
+                    }
+                });
+
     }
 
-    private static String getResponseData(final HttpServletResponse response) throws IOException {
-        String payload = null;
+    private static Optional getResponseData(final HttpServletResponse response) {
         ContentCachingResponseWrapper wrapper =
                 WebUtils.getNativeResponse(response, ContentCachingResponseWrapper.class);
-        if (wrapper != null) {
-            byte[] buf = wrapper.getContentAsByteArray();
-            if (buf.length > 0) {
-                payload = new String(buf, 0, buf.length, wrapper.getCharacterEncoding());
-                wrapper.copyBodyToResponse();
-            }
-        }
-        return payload;
+        return Optional.ofNullable(wrapper)
+                .map(ContentCachingResponseWrapper::getContentAsByteArray)
+                .map(buf -> {
+                    try {
+                        wrapper.copyBodyToResponse();
+                        return new String(buf, 0, buf.length, wrapper.getCharacterEncoding());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        return Optional.empty();
+                    }
+                });
     }
 
     private Map<String, String> headersMapRequest(HttpServletRequest request) {
@@ -92,7 +94,6 @@ public class LoggingFilter implements Filter {
 
     private Map<String, String> headersMapResponse(HttpServletResponse response) {
         Map<String, String> map = new HashMap<>();
-
         Collection<String> headerNames = response.getHeaderNames();
         for (String header : headerNames) {
             map.put(header, response.getHeader(header));
