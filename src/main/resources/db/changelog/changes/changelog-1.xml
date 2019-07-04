@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
     http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
     <changeSet author="jjaworski" id="1">
-        <createTable tableName="book">
+        <createTable tableName="books">
             <column name="id"
                     type="bigserial"
                     autoIncrement="true" startWith="1">
@@ -30,6 +30,12 @@
                 <constraints nullable="false"/>
             </column>
             <column name="description" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantity" type="int">
                 <constraints nullable="false"/>
             </column>
         </createTable>

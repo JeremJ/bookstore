@@ -31,4 +31,7 @@ public class BookDTO {
     private String publisher;
     @Size(max = 200)
     private String description;
+    @DecimalMin("0")
+    private Integer quantity;
+    private Integer version;
 }

@@ -2,31 +2,29 @@ package com.bs.library.order;
 
 import com.bs.library.book.Book;
 import com.bs.library.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = "id")
-@Table(name = "orders")
-@Entity
-public class Order {
+public class OrderDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @NotNull
+    @JsonIgnore
     private User user;
-    @ManyToOne
-    @JoinColumn(name = "book_id")
+    @NotNull
     private Book book;
+    @DecimalMin("0")
     private Integer quantity;
+    @DecimalMin("0.01")
     private BigDecimal totalPrice;
+
 }

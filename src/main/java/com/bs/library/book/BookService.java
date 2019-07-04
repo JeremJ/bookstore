@@ -1,6 +1,7 @@
 package com.bs.library.book;
 
 import com.bs.library.book.utils.SearchQueryParams;
+import com.bs.library.exception.BookOutOfStockException;
 import com.bs.library.exception.BookNotFoundException;
 import lombok.Data;
 import org.springframework.cache.annotation.CacheEvict;
@@ -44,9 +45,9 @@ public class BookService {
         bookRepository.saveAndFlush(book);
     }
 
-    public Book getBook(Long id) throws BookNotFoundException {
+    public Book getBook(Long id) {
         return bookRepository.findById(id)
-                .orElseThrow(() -> new BookNotFoundException());
+                .orElseThrow(BookNotFoundException::new);
     }
 
     @CacheEvict(value = BOOK_CACHEVALUE, allEntries = true)
@@ -56,7 +57,6 @@ public class BookService {
         } else {
             throw new BookNotFoundException();
         }
-
     }
 
     @CacheEvict(value = BOOK_CACHEVALUE, allEntries = true)
@@ -78,4 +78,11 @@ public class BookService {
         bookRepository.save(currentBook);
     }
 
+    public Boolean checkBookQuantity(Book book, Integer quantity) {
+        if ((book.getQuantity() - quantity) >= 0) {
+            return true;
+        } else {
+            throw new BookOutOfStockException();
+        }
+    }
 }

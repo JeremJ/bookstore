@@ -1,10 +1,8 @@
 package com.bs.library.book;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import org.mapstruct.factory.Mappers;
 
 import java.math.BigDecimal;
@@ -12,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 
 public class BookMapperTest {
 
@@ -25,17 +24,18 @@ public class BookMapperTest {
     @Test
     public void toBookDto_returnsMappedObject_True() {
         //given
-        Book book = new Book(1L, 7576575, "Czysty Kod", "Robert C. Martin", new BigDecimal(50.99), "qwerty", "qwerty", "qwerty");
+        Book book = new Book(1L, 7576575, "Czysty Kod", "Robert C. Martin", new BigDecimal(50.99), "qwerty", "qwerty", "qwerty", 1, 0);
         //when
         BookDTO mapperResult = bookMapper.toBookDTO(book);
         //then
         assertThat(mapperResult.getAuthor()).isEqualTo(book.getAuthor());
+
     }
 
     @Test
     public void toBook_returnsMappedObject_True() throws JsonProcessingException {
         //given
-        BookDTO bookDTO = new BookDTO(1L, 7576575, "Czysty Kod", "Robert C. Martin", new BigDecimal(50.99), "qwerty", "qwerty", null);
+        BookDTO bookDTO = new BookDTO(1L, 7576575, "Czysty Kod", "Robert C. Martin", new BigDecimal(50.99), "qwerty", "qwerty", null, 1, 0);
         //when
         Book book = bookMapper.toBook(bookDTO);
         //then
@@ -47,8 +47,8 @@ public class BookMapperTest {
     public void toBookDtos_returnsMappedObject_True() throws JsonProcessingException {
         //given
         List<Book> books = Arrays.asList(
-                new Book(1L, 7576575, "Czysty Kod", "Robert C. Martin", new BigDecimal(50.99), "qwerty", "qwerty", "qwerty"),
-                new Book(2L, 9432123, "Ogniem i mieczem", "Henryk Sienkiewicz", new BigDecimal(99.99), "qwerty", "qwerty", "qwerty")
+                new Book(1L, 7576575, "Czysty Kod", "Robert C. Martin", new BigDecimal(50.99), "qwerty", "qwerty", "qwerty", 1, 0),
+                new Book(2L, 9432123, "Ogniem i mieczem", "Henryk Sienkiewicz", new BigDecimal(99.99), "qwerty", "qwerty", "qwerty", 1, 0)
         );
         //when
         List<BookDTO> mapperResult = bookMapper.toBookDTOs(books);

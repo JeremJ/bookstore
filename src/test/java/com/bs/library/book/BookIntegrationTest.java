@@ -1,6 +1,7 @@
 package com.bs.library.book;
 
 import com.bs.library.exception.BookNotFoundException;
+import com.bs.library.order.OrderService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -34,7 +35,6 @@ import static org.mockito.internal.verification.VerificationModeFactory.times;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -54,6 +54,8 @@ public class BookIntegrationTest {
     @Autowired
     BookController bookController;
 
+    @Autowired
+    OrderService orderService;
 
 
     @Before
@@ -64,13 +66,12 @@ public class BookIntegrationTest {
 
 
     @Test
-
     public void allBooks_ValidData_StatusOk() throws Exception {
 
         //given
         List<Book> books = Arrays.asList(
-                new Book(1L, 7576575, "Czysty Kod", "Robert C. Martin", new BigDecimal(50.99), "qwerty", "qwerty", "qwerty"),
-                new Book(2L, 9432123, "Ogniem i mieczem", "Henryk Sienkiewicz", new BigDecimal(99.99), "qwerty", "qwerty", "qwerty")
+                new Book(1L, 7576575, "Czysty Kod", "Robert C. Martin", new BigDecimal(50.99), "qwerty", "qwerty", "qwerty", 1, 0),
+                new Book(2L, 9432123, "Ogniem i mieczem", "Henryk Sienkiewicz", new BigDecimal(99.99), "qwerty", "qwerty", "qwerty", 1, 0)
         );
         Page<Book> page = new PageImpl<>(books);
         Pageable firstPageWithTwoElements = PageRequest.of(0, 2);
@@ -102,7 +103,7 @@ public class BookIntegrationTest {
     @Test
     public void addBook_ValidData_StatusCreated() throws Exception {
         //given
-        Book book = new Book(1L, 7576575, "Czysty Kod", "Robert C. Martin", new BigDecimal(50.99), "qwerty", "qwerty", "qwerty");
+        Book book = new Book(1L, 7576575, "Czysty Kod", "Robert C. Martin", new BigDecimal(50.99), "qwerty", "qwerty", "qwerty", 1, 0);
         String requestJson = asJson(book);
         //then
         mockMvc.perform(post("/books")
@@ -128,7 +129,7 @@ public class BookIntegrationTest {
     @Test
     public void getBook_ValidData_ProperJsonReturned() throws Exception {
         //given
-        Book book = new Book(1L, 7576575, "Czysty Kod", "Robert C. Martin", new BigDecimal(50.99), "qwerty", "qwerty", "qwerty");
+        Book book = new Book(1L, 7576575, "Czysty Kod", "Robert C. Martin", new BigDecimal(50.99), "qwerty", "qwerty", "qwerty", 1, 0);
         String requestJson = asJson(book);
         given(bookService.getBook(1L)).willReturn(book);
         //then
@@ -153,7 +154,7 @@ public class BookIntegrationTest {
     @Test
     public void updateBook_InvalidId_ExceptionThrown() throws Exception {
         //given
-        Book book = new Book(1L, 7576575, "Czysty Kod", "Robert C. Martin", new BigDecimal(50.99), "qwerty", "qwerty", "qwerty");
+        Book book = new Book(1L, 7576575, "Czysty Kod", "Robert C. Martin", new BigDecimal(50.99), "qwerty", "qwerty", "qwerty", 1, 0);
         String requestJson = asJson(book);
         doThrow(new BookNotFoundException()).when(bookService).updateBook(1L, book);
         //then
@@ -169,7 +170,7 @@ public class BookIntegrationTest {
     @WithMockUser(username = "test", authorities = {"CUSTOMER"})
     public void updateBook_AccessDenied_Code403() throws Exception {
         //given
-        Book book = new Book(1L, 7576575, "Czysty Kod", "Robert C. Martin", new BigDecimal(50.99), "qwerty", "qwerty", "qwerty");
+        Book book = new Book(1L, 7576575, "Czysty Kod", "Robert C. Martin", new BigDecimal(50.99), "qwerty", "qwerty", "qwerty", 1, 0);
         String requestJson = asJson(book);
         doThrow(new BookNotFoundException()).when(bookService).updateBook(1L, book);
         //then

@@ -17,9 +17,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/books")
 public class BookController {
-//asAuthority(T(com.bs.library.user.RoleType).ADMIN)
+    //asAuthority(T(com.bs.library.user.RoleType).ADMIN)
     private final BookService bookService;
     private final BookMapper bookMapper;
+
     @GetMapping("/all")
     @PreAuthorize("hasAuthority(T(com.bs.library.user.RoleType).ADMIN) or hasAuthority(T(com.bs.library.user.RoleType).CUSTOMER)")
     public ResponseEntity<List<BookDTO>> allBooks(Pageable pageable) {
@@ -53,13 +54,11 @@ public class BookController {
     public ResponseEntity updateBook(@PathVariable Long id, @Valid @RequestBody BookDTO bookDTO) {
         bookService.updateBook(id, bookMapper.toBook(bookDTO));
         return ResponseEntity.status(HttpStatus.CREATED).body("Record updated Successfully !");
-
     }
 
     @GetMapping
     @PreAuthorize("hasAuthority(T(com.bs.library.user.RoleType).ADMIN) or hasAuthority(T(com.bs.library.user.RoleType).CUSTOMER)")
     public ResponseEntity<List<BookDTO>> findAllByField(SearchQueryParams search, Sort sort) {
-
         List<Book> books = bookService.findByParameter(search, sort);
         return ResponseEntity.ok(bookMapper.toBookDTOs(books));
     }
