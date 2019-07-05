@@ -1,7 +1,5 @@
-package com.bs.library.order;
+package com.bs.library.entity;
 
-import com.bs.library.book.Book;
-import com.bs.library.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

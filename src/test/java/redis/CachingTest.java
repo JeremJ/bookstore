@@ -1,8 +1,8 @@
 package redis;
 
 import com.bs.library.LibraryApplication;
-import com.bs.library.book.BookRepository;
-import com.bs.library.book.BookService;
+import com.bs.library.repository.BookRepository;
+import com.bs.library.service.BookService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

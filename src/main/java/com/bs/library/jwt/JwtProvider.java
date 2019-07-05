@@ -1,6 +1,6 @@
 package com.bs.library.jwt;
 
-import com.bs.library.user.UserPrinciple;
+import com.bs.library.model.UserPrinciple;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

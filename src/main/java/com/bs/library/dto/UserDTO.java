@@ -1,6 +1,7 @@
-package com.bs.library.user;
+package com.bs.library.dto;
 
-import com.bs.library.order.Order;
+import com.bs.library.entity.Order;
+import com.bs.library.model.RoleType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Set;
 
 @Data
@@ -30,5 +32,5 @@ public class UserDTO {
     private BigDecimal accountBalance = new BigDecimal(10);
     @JsonIgnore
     private Set<Order> orders;
-    private Integer version;
+    private Timestamp version;
 }

@@ -23,18 +23,13 @@
         <spring-boot-test.version>2.1.5.RELEASE</spring-boot-test.version>
         <artifactId>spring-tx</artifactId>
         <spring-tx.version>5.1.7.RELEASE</spring-tx.version>
-        <liquibase-core.version>3.6.2</liquibase-core.version>
         <liquibase-maven-plugin.version>3.6.3</liquibase-maven-plugin.version>
         <spring-web.version>5.1.7.RELEASE</spring-web.version>
         <org.mapstruct.version>1.3.0.Final</org.mapstruct.version>
         <org.projectlombok.version>1.18.8</org.projectlombok.version>
         <rest-assured.version>4.0.0</rest-assured.version>
-        <spring-data-redis.version>2.1.9.RELEASE</spring-data-redis.version>
         <lettuce-core.version>5.1.7.RELEASE</lettuce-core.version>
         <jjwt.version>0.9.1</jjwt.version>
-        <liquibase-hibernate5.version>3.6</liquibase-hibernate5.version>
-        <spring-data-jpa.version>2.1.9.RELEASE</spring-data-jpa.version>
-        <spring-beans.version>5.1.8.RELEASE</spring-beans.version>
     </properties>
 
     <dependencies>
@@ -88,7 +83,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-test</artifactId>
-            <version>${spring-boot-test.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -99,7 +93,6 @@
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
-            <version>${liquibase-core.version}</version>
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>
@@ -115,7 +108,6 @@
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-redis</artifactId>
-            <version>${spring-data-redis.version}</version>
         </dependency>
         <dependency>
             <groupId>io.lettuce</groupId>

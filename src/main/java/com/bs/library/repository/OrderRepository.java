@@ -1,7 +1,8 @@
-package com.bs.library.order;
+package com.bs.library.repository;
 
 
-import com.bs.library.user.User;
+import com.bs.library.entity.Order;
+import com.bs.library.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

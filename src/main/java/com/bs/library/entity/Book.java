@@ -1,4 +1,4 @@
-package com.bs.library.book;
+package com.bs.library.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 @Data
 @AllArgsConstructor
@@ -27,5 +28,5 @@ public class Book implements Serializable {
     private String description;
     private Integer quantity;
     @Version
-    private Integer version;
+    private Timestamp version;
 }

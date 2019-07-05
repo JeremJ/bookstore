@@ -1,10 +1,13 @@
-package com.bs.library.user;
+package com.bs.library.service;
 
+import com.bs.library.entity.User;
 import com.bs.library.exception.UserAlreadyExists;
 import com.bs.library.exception.UserAccountBalanceException;
 import com.bs.library.exception.UserNotFoundException;
 import com.bs.library.jwt.JwtProvider;
 import com.bs.library.jwt.JwtResponse;
+import com.bs.library.repository.UserRepository;
+import com.bs.library.model.UserPrinciple;
 import lombok.Data;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -104,6 +107,11 @@ public class UserService implements UserDetailsService {
         ).orElseThrow(UserNotFoundException::new);
 
         userRepository.save(currentUser);
+    }
+
+    public String getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getName();
     }
 
 }

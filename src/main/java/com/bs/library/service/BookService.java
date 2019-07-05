@@ -1,8 +1,11 @@
-package com.bs.library.book;
+package com.bs.library.service;
 
-import com.bs.library.book.utils.SearchQueryParams;
+import com.bs.library.model.BookSpecification;
+import com.bs.library.model.SearchQueryParams;
+import com.bs.library.entity.Book;
 import com.bs.library.exception.BookOutOfStockException;
 import com.bs.library.exception.BookNotFoundException;
+import com.bs.library.repository.BookRepository;
 import lombok.Data;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;

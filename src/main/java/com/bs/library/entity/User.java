@@ -1,6 +1,6 @@
-package com.bs.library.user;
+package com.bs.library.entity;
 
-import com.bs.library.order.Order;
+import com.bs.library.model.RoleType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,7 +31,7 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Order> orders = new HashSet<>();
     @Version
-    private Integer version;
+    private Timestamp version;
 
     public User(String username, String pass, String email, RoleType role, BigDecimal accountBalance) {
         this.username = username;

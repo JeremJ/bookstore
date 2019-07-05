@@ -23,7 +23,7 @@
             <column name="role" type="varchar(40)">
                 <constraints nullable="false"/>
             </column>
-            <column name="version" type="int">
+            <column name="version" type="timestamp without timezone">
                 <constraints nullable="false"/>
             </column>
             <column name="account_balance" type="numeric">

@@ -1,4 +1,4 @@
-package com.bs.library.user;
+package com.bs.library.model;
 
 
 public enum RoleType {

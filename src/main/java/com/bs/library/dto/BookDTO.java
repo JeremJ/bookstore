@@ -1,4 +1,4 @@
-package com.bs.library.book;
+package com.bs.library.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,6 +9,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 @Data
 @AllArgsConstructor
@@ -33,5 +34,5 @@ public class BookDTO {
     private String description;
     @DecimalMin("0")
     private Integer quantity;
-    private Integer version;
+    private Timestamp version;
 }

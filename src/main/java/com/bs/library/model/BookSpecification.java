@@ -1,5 +1,6 @@
-package com.bs.library.book;
+package com.bs.library.model;
 
+import com.bs.library.entity.Book;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.math.BigDecimal;

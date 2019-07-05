@@ -1,16 +1,12 @@
-package com.bs.library.order;
+package com.bs.library.service;
 
-import com.bs.library.book.Book;
-import com.bs.library.book.BookService;
+import com.bs.library.entity.Book;
+import com.bs.library.entity.Order;
+import com.bs.library.entity.User;
 import com.bs.library.exception.OrderProcessedException;
-import com.bs.library.user.User;
-import com.bs.library.user.UserService;
+import com.bs.library.repository.OrderRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -25,10 +21,8 @@ public class OrderService {
 
     private final UserService userService;
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
     public void createOrder(Long id, Integer quantity) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentPrincipalName = authentication.getName();
+        String currentPrincipalName = userService.getCurrentUser();
         Book book = bookService.getBook(id);
         User user = userService.getUserByUsername(currentPrincipalName);
         BigDecimal totalPrice = book.getPrice().multiply(new BigDecimal(quantity));
@@ -48,8 +42,7 @@ public class OrderService {
     }
 
     public List<Order> getOrders() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentPrincipalName = authentication.getName();
+        String currentPrincipalName = userService.getCurrentUser();
         User user = userService.getUserByUsername(currentPrincipalName);
         return orderRepository.findByUser(user);
     }

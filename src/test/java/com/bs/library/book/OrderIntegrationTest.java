@@ -1,13 +1,15 @@
 package com.bs.library.book;
 
+import com.bs.library.entity.Book;
 import com.bs.library.exception.BookOutOfStockException;
 import com.bs.library.exception.UserAccountBalanceException;
-import com.bs.library.order.Order;
-import com.bs.library.order.OrderController;
-import com.bs.library.order.OrderMapper;
-import com.bs.library.order.OrderService;
-import com.bs.library.user.RoleType;
-import com.bs.library.user.User;
+import com.bs.library.entity.Order;
+import com.bs.library.controller.OrderController;
+import com.bs.library.mapper.OrderMapper;
+import com.bs.library.service.OrderService;
+import com.bs.library.model.RoleType;
+import com.bs.library.entity.User;
+import com.bs.library.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +23,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 
@@ -50,10 +53,13 @@ public class OrderIntegrationTest {
     @Autowired
     OrderController orderController;
 
+    @Autowired
+    UserService userService;
+
 
     @Before
     public void before() {
-        orderController = new OrderController(orderService, orderMapper);
+        orderController = new OrderController(orderService, userService, orderMapper);
         MockitoAnnotations.initMocks(this);
     }
 
@@ -61,7 +67,7 @@ public class OrderIntegrationTest {
     @WithMockUser(username = "test", authorities = {"CUSTOMER"})
     public void createOrder_BookOutOfStock_ExceptionThrown() throws Exception {
         //given
-        Book book = new Book(1L, 7576575, "Czysty Kod", "Robert C. Martin", new BigDecimal(50.99), "qwerty", "qwerty", "qwerty", 1, 0);
+        Book book = new Book(1L, 7576575, "Czysty Kod", "Robert C. Martin", new BigDecimal(50.99), "qwerty", "qwerty", "qwerty", 1, new Timestamp(System.currentTimeMillis()));
         //then
         doThrow(new BookOutOfStockException()).when(orderService).createOrder(1L, 5);
         mockMvc.perform(post("/order/{id}/{quantity}", 1, 5))
@@ -74,8 +80,8 @@ public class OrderIntegrationTest {
     @WithMockUser(username = "test", authorities = {"ADMIN"})
     public void getAllOrders_ValidData_StatusOk() throws Exception {
         //given
-        Book book = new Book(1L, 7576575, "Czysty Kod", "Robert C. Martin", new BigDecimal(50.99), "qwerty", "qwerty", "qwerty", 1, 0);
-        User user = new User(1L, "qwert", "qwerty@gmail.com", "qwerty1", RoleType.CUSTOMER, new BigDecimal(100), null, 1);
+        Book book = new Book(1L, 7576575, "Czysty Kod", "Robert C. Martin", new BigDecimal(50.99), "qwerty", "qwerty", "qwerty", 1, new Timestamp(System.currentTimeMillis()));
+        User user = new User(1L, "qwert", "qwerty@gmail.com", "qwerty1", RoleType.CUSTOMER, new BigDecimal(100), null, new Timestamp(System.currentTimeMillis()));
         List<Order> orders = Arrays.asList(
                 new Order(1L, user, book, 1, new BigDecimal(2)),
                 new Order(1L, user, book, 1, new BigDecimal(2))
@@ -93,7 +99,7 @@ public class OrderIntegrationTest {
     @WithMockUser(username = "test", authorities = {"CUSTOMER"})
     public void createOrder_AccountBalance_ExceptionThrown() throws Exception {
         //given
-        Book book = new Book(1L, 7576575, "Czysty Kod", "Robert C. Martin", new BigDecimal(20), "qwerty", "qwerty", "qwerty", 1, 0);
+        Book book = new Book(1L, 7576575, "Czysty Kod", "Robert C. Martin", new BigDecimal(20), "qwerty", "qwerty", "qwerty", 1, new Timestamp(System.currentTimeMillis()));
 
         doThrow(new UserAccountBalanceException()).when(orderService).createOrder(1L, 1);
         //then

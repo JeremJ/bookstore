@@ -1,8 +1,6 @@
-package com.bs.library.order;
+package com.bs.library.dto;
 
-import com.bs.library.book.Book;
-import com.bs.library.user.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.bs.library.entity.Book;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,9 +15,6 @@ import java.math.BigDecimal;
 public class OrderDTO {
 
     private Long id;
-    @NotNull
-    @JsonIgnore
-    private User user;
     @NotNull
     private Book book;
     @DecimalMin("0")

@@ -1,4 +1,4 @@
-package com.bs.library.security;
+package com.bs.library.dto;
 
 import lombok.Data;
 
