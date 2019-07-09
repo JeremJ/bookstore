@@ -1,4 +1,4 @@
-package com.bs.library.book.utils;
+package com.bs.library.model;
 
 import lombok.Data;
 

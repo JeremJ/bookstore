@@ -1,7 +1,7 @@
-package com.bs.library.book;
+package com.bs.library.mapper;
 
-import com.bs.library.book.Book;
-import com.bs.library.book.BookDTO;
+import com.bs.library.dto.BookDTO;
+import com.bs.library.entity.Book;
 import org.mapstruct.Mapper;
 
 import java.util.List;

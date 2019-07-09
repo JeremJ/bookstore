@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet author="jjaworski" id="3">
+        <createTable tableName="orders">
+            <column name="id"
+                    type="bigserial"
+                    autoIncrement="true" startWith="1">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="orders_pk"/>
+            </column>
+            <column name="book_id" type="bigserial">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="bigserial">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantity" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="total_price" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="book_id"
+                                 baseTableName="orders"
+                                 constraintName="fk_orders_books_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="books"/>
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="orders"
+                                 constraintName="fk_orders_users_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="users"/>
+    </changeSet>
+</databaseChangeLog>
+
+
+
+
+
+
+
+
+
+
+

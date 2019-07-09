@@ -1,5 +1,6 @@
-package com.bs.library.user;
+package com.bs.library.model;
 
+import com.bs.library.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;

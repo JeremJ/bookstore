@@ -29,8 +29,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(value = {UsernameNotFoundException.class})
-    protected ResponseEntity<Object> handleUserNotFoundException(Exception ex, WebRequest request) {
-        String message = "User not found";
+    protected ResponseEntity<Object> handleUsernameNotFoundException(Exception ex, WebRequest request) {
+        String message = "Username not found";
         return handleExceptionInternal(ex, message, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
@@ -39,5 +39,31 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         String message = "User is already exists!";
         return handleExceptionInternal(ex, message, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
+
+    @ExceptionHandler(value = {OrderProcessedException.class})
+    protected ResponseEntity<Object> handleProcessedException(Exception ex, WebRequest request) {
+        String message = "Cannot proceed order!";
+        return handleExceptionInternal(ex, message, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler(value = {BookOutOfStockException.class})
+    protected ResponseEntity<Object> handleBookOutOfStockException(Exception ex, WebRequest request) {
+        String message = "Product is out of stock!";
+        return handleExceptionInternal(ex, message, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler(value = {UserAccountBalanceException.class})
+    protected ResponseEntity<Object> handleUserAccountBalanceException(Exception ex, WebRequest request) {
+        String message = "Check your account balance!";
+        return handleExceptionInternal(ex, message, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler(value = {UserNotFoundException.class})
+    protected ResponseEntity<Object> handleUserNotFoundException(Exception ex, WebRequest request) {
+        String message = "User not found!";
+        return handleExceptionInternal(ex, message, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
+
 
 }

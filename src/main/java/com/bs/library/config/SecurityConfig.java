@@ -2,7 +2,7 @@ package com.bs.library.config;
 
 import com.bs.library.jwt.JwtAuthEntryPoint;
 import com.bs.library.jwt.JwtAuthTokenFilter;
-import com.bs.library.user.UserService;
+import com.bs.library.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

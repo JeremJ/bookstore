@@ -1,16 +1,19 @@
-package com.bs.library.book;
+package com.bs.library.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "book")
+@Table(name = "books")
 public class Book implements Serializable {
 
     @Id
@@ -23,4 +26,7 @@ public class Book implements Serializable {
     private String genre;
     private String publisher;
     private String description;
+    private Integer quantity;
+    @Version
+    private Timestamp version;
 }
