@@ -19,7 +19,7 @@
         <postgres.version>42.2.5</postgres.version>
         <springfox-swagger2.version>2.9.2</springfox-swagger2.version>
         <springfox-swagger-ui.version>2.9.2</springfox-swagger-ui.version>
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
         <spring-boot-test.version>2.1.5.RELEASE</spring-boot-test.version>
         <artifactId>spring-tx</artifactId>
         <spring-tx.version>5.1.7.RELEASE</spring-tx.version>
